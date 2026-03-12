@@ -26,19 +26,26 @@ jobs:
     name: Test code
     needs: scan_code
     runs-on: ubuntu-latest
-    
+    steps:
+      - run: echo "tests coming soon"
   # 3. build
   build_code:
     name: Build code
     needs: test_code
     runs-on: ubuntu-latest
+    steps:
+      - run: echo "build coming soon"
   # 4. scan image
   scan_image:
     name: Scan image
     needs: build_code
     runs-on: ubuntu-latest
+    steps:
+      - run: echo "trivy coming soon"
   # 5. push
   push_image:
     name: Push image
     needs: scan_image
     runs-on: ubuntu-latest
+    steps:
+      - run: echo "push coming soon"
