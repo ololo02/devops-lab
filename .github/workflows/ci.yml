@@ -19,7 +19,7 @@ jobs:
       - name: Run Semgrep
         run: |
           pip install semgrep
-          semgrep --config auto .
+          semgrep --config auto . --error
 
   # 2. test
   test_code:
