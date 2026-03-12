@@ -1,0 +1,44 @@
+name: DevSecOps Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # 1. scan code
+  scan_code:
+    name: Scan code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+        python-version: '3.9'
+      - name: Run Semgrep
+        run: |
+          pip install semgrep
+          semgrep --config auto .
+
+  # 2. test
+  test_code:
+    name: Test code
+    needs: scan_code
+    runs-on: ubuntu-latest
+    
+  # 3. build
+  build_code:
+    name: Build code
+    needs: test_code
+    runs-on: ubuntu-latest
+  # 4. scan image
+  scan_image:
+    name: Scan image
+    needs: build_code
+    runs-on: ubuntu-latest
+  # 5. push
+  push_image:
+    name: Push image
+    needs: scan_image
+    runs-on: ubuntu-latest
