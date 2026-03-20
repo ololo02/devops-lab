@@ -1,5 +1,4 @@
 from flask import Flask, request
-import subprocess
 import os
 
 app = Flask(__name__)
@@ -11,9 +10,8 @@ def hello():
     return "Hello DevOps Lab!"
 
 ALLOWED_COMMANDS = {
-    "ls": ["/bin/ls"],
-    "pwd": ["/bin/pwd"],
-    "date": ["/bin/date"],
+    "ls": os.listdir,
+    "pwd": os.getcwd,
 }
 
 @app.route("/run")
@@ -21,7 +19,8 @@ def run_command():
     cmd = request.args.get("cmd")
     if cmd not in ALLOWED_COMMANDS:
         return "Command not allowed", 403
-    return subprocess.check_output(ALLOWED_COMMANDS[cmd])
+    result = ALLOWED_COMMANDS[cmd]()
+    return str(result)
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("FLASK_HOST", "127.0.0.1"), port=5000)
