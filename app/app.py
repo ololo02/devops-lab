@@ -10,14 +10,18 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 def hello():
     return "Hello DevOps Lab!"
 
-ALLOWED_COMMANDS = ["ls", "pwd", "date"]
+ALLOWED_COMMANDS = {
+    "ls": ["/bin/ls"],
+    "pwd": ["/bin/pwd"],
+    "date": ["/bin/date"],
+}
 
 @app.route("/run")
 def run_command():
     cmd = request.args.get("cmd")
     if cmd not in ALLOWED_COMMANDS:
         return "Command not allowed", 403
-    return subprocess.check_output([cmd], shell=False)
+    return subprocess.check_output(ALLOWED_COMMANDS[cmd])
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("FLASK_HOST", "127.0.0.1"), port=5000)
