@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.9-slim
 
 WORKDIR /app
 
@@ -7,8 +7,9 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN apt-get update && apt-get install -y curl wget
+RUN useradd -m appuser
 
 EXPOSE 5000
 
+USER appuser
 CMD ["python", "app.py"]
