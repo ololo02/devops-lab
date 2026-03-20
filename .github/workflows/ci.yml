@@ -20,11 +20,25 @@ jobs:
         run: |
           pip install semgrep
           semgrep --config auto . --error
+      
+
+  # 1 bis. scan_secrets
+  scan_secrets:
+    name: Scan secrets
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+    - name: Run Gitleaks
+      uses: gitleaks/gitleaks-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # 2. test
   test_code:
     name: Test code
-    needs: scan_code
+    needs: [scan_code, scan_secrets]
     runs-on: ubuntu-latest
     steps:
       - run: echo "tests coming soon"

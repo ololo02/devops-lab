@@ -1,22 +1,29 @@
 from flask import Flask, request
-import subprocess
 import os
 
 app = Flask(__name__)
 
-SECRET_KEY = "super-secret-hardcoded-123"  # 🚨 vuln intentionnelle
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 @app.route("/")
 def hello():
     return "Hello DevOps Lab!"
 
+ALLOWED_COMMANDS = {
+    "ls": os.listdir,
+    "pwd": os.getcwd,
+}
+
 @app.route("/run")
 def run_command():
     cmd = request.args.get("cmd")
-    return subprocess.check_output(cmd, shell=True)  # 🚨 vuln intentionnelle
+    if cmd not in ALLOWED_COMMANDS:
+        return "Command not allowed", 403
+    result = ALLOWED_COMMANDS[cmd]()
+    return str(result)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host=os.environ.get("FLASK_HOST", "127.0.0.1"), port=5000)
 ```
 
 Et `app/requirements.txt` :
