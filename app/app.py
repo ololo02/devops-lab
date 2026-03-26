@@ -31,3 +31,4 @@ Et `app/requirements.txt` :
 flask==2.0.1
 requests==2.20.0
 API_KEY = "ghp_fakesecret123456789"
+GITHUB_TOKEN = "ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdef1234"
