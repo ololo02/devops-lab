@@ -41,7 +41,15 @@ jobs:
     needs: [scan_code, scan_secrets]
     runs-on: ubuntu-latest
     steps:
-      - run: echo "tests coming soon"
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.9'
+      - name: Run tests
+        run: |
+          pip install flask pytest
+          cd app
+          pytest test_app.py -v
   # 3. build
   build_code:
     name: Build code
