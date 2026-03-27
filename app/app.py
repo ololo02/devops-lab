@@ -24,9 +24,4 @@ def run_command():
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("FLASK_HOST", "127.0.0.1"), port=5000)
-```
 
-Et `app/requirements.txt` :
-```
-flask==2.0.1
-requests==2.20.0
