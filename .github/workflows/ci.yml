@@ -1,13 +1,14 @@
 name: DevSecOps Pipeline
 
 on:
-  permissions:
-    contents: read
-    packages: write
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
+permissions:
+    contents: read
+    packages: write
 
 jobs:
   # 1. scan code
