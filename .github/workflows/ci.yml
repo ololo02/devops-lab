@@ -79,7 +79,16 @@ jobs:
     needs: build_code
     runs-on: ubuntu-latest
     steps:
-      - run: echo "trivy coming soon"
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          format: table
+          exit-code: '0'
+          severity: CRITICAL,HIGH
+        env:
+          TRIVY_USERNAME: ${{ github.actor }}
+          TRIVY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   # 5. push
   push_image:
     name: Push image
