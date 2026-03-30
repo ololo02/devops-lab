@@ -1,6 +1,9 @@
 name: DevSecOps Pipeline
 
 on:
+  permissions:
+    contents: read
+    packages: write
   push:
     branches: [main]
   pull_request:
