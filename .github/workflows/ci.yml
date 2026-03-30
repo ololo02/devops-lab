@@ -54,9 +54,9 @@ jobs:
           pip install flask pytest
           cd app
           pytest test_app.py -v
-  # 3. build
+  # 3. build and scan
   build_code:
-    name: Build code
+    name: Build and scan image
     needs: test_code
     runs-on: ubuntu-latest
     steps:
@@ -71,14 +71,9 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./app
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
+          load: ${{ github.event_name == 'pull_request' }}
           tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
-  # 4. scan image
-  scan_image:
-    name: Scan image
-    needs: build_code
-    runs-on: ubuntu-latest
-    steps:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
@@ -89,10 +84,12 @@ jobs:
         env:
           TRIVY_USERNAME: ${{ github.actor }}
           TRIVY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-  # 5. push
-  push_image:
-    name: Push image
-    needs: scan_image
+  # 4. scan image
+  scan_image:
+    name: Scan image
+    needs: build_code
     runs-on: ubuntu-latest
     steps:
-      - run: echo "push coming soon"
+      - name: Done
+        run: echo "scan done in build job"
+  
