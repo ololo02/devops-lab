@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-lab
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devops-lab
+  template:
+    metadata:
+      labels:
+        app: devops-lab
+    spec:
+      containers:
+        - name: devops-lab
+          image: ghcr.io/ololo02/devops-lab:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: devops-lab-secret
+                  key: secret-key
+            - name: FLASK_HOST
+              value: "0.0.0.0"

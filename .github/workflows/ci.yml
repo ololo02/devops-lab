@@ -93,3 +93,16 @@ jobs:
       - name: Done
         run: echo "scan done in build job"
   
+  #Deploy image to k8s
+  push_image:
+    name: Deploy to k8s
+    needs: scan_image
+    runs-on: self-hosted
+    if: github.event_name != 'pull_request'
+    steps:
+      - uses: actions/checkout@v5
+      - name: Deploy to k3s
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+          kubectl rollout status deployment/devops-lab
