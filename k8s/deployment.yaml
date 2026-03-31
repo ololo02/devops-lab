@@ -22,6 +22,7 @@ spec:
             - containerPort: 5000
           securityContext:
             runAsNonRoot: true
+            runAsUser: 1001
             allowPrivilegeEscalation: false
           env:
             - name: SECRET_KEY
