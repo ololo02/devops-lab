@@ -8,7 +8,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY . .
 
-RUN useradd -m appuser
+RUN useradd -m -u 1001 appuser
 
 EXPOSE 5000
 
