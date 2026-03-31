@@ -18,6 +18,9 @@ spec:
           image: ghcr.io/ololo02/devops-lab:latest
           ports:
             - containerPort: 5000
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
           env:
             - name: SECRET_KEY
               valueFrom:
